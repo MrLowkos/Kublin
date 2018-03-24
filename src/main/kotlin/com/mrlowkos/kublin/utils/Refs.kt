@@ -20,31 +20,22 @@
  # SOFTWARE.                                                                                      #
  #################################################################################################*/
 
-package com.mrlowkos.kublin
-
-import com.mrlowkos.kublin.utils.Log
-import com.mrlowkos.kublin.utils.Refs
-import net.minecraftforge.fml.common.Mod
+package com.mrlowkos.kublin.utils
 
 /**
  * @author MrLowkos
  * @version 1.0.0
  * @since 1.0.0
  */
-@Mod(name = Refs.NAME,
-    modid = Refs.ID,
-    version = Refs.VERSION,
-    acceptedMinecraftVersions = Refs.ACCEPTED,
-    acceptableRemoteVersions =  Refs.ACCEPTED,
-    modLanguage = Refs.LANGUAGE,
-    modLanguageAdapter = Refs.ADAPTER)
-object Kublin {
+object Refs {
 
-  @Mod.Instance(Refs.ID)
-  lateinit var instance: Kublin
+  const val ID                      = "kublin"
+  const val ADAPTER                 = "com.mrlowkos.kublin.adapter.KotlinAdapter"
 
-  init {
-    Log.info("Kotlin in da'place !")
-  }
+  internal const val NAME           = "Kublin"
+  internal const val VERSION        = "@VERSION@"
+  internal const val ACCEPTED       = "*"
+  internal const val LANGUAGE       = "kotlin"
+  internal const val MOD_LOG_TAG    = "[${NAME}]"
 
 }

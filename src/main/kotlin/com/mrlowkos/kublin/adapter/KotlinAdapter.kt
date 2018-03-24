@@ -20,31 +20,54 @@
  # SOFTWARE.                                                                                      #
  #################################################################################################*/
 
-package com.mrlowkos.kublin
+package com.mrlowkos.kublin.adapter
 
 import com.mrlowkos.kublin.utils.Log
-import com.mrlowkos.kublin.utils.Refs
-import net.minecraftforge.fml.common.Mod
+import net.minecraftforge.fml.common.FMLModContainer
+import net.minecraftforge.fml.common.ILanguageAdapter
+import net.minecraftforge.fml.common.ModContainer
+import net.minecraftforge.fml.relauncher.Side
+
+import java.lang.reflect.Field
+import java.lang.reflect.InvocationTargetException
+import java.lang.reflect.Method
 
 /**
  * @author MrLowkos
  * @version 1.0.0
  * @since 1.0.0
  */
-@Mod(name = Refs.NAME,
-    modid = Refs.ID,
-    version = Refs.VERSION,
-    acceptedMinecraftVersions = Refs.ACCEPTED,
-    acceptableRemoteVersions =  Refs.ACCEPTED,
-    modLanguage = Refs.LANGUAGE,
-    modLanguageAdapter = Refs.ADAPTER)
-object Kublin {
+class KotlinAdapter : ILanguageAdapter {
 
-  @Mod.Instance(Refs.ID)
-  lateinit var instance: Kublin
+  @Throws(IllegalAccessException::class,
+      IllegalArgumentException::class,
+      NullPointerException::class,
+      ExceptionInInitializerError::class)
+  override fun setProxy(target: Field, proxyTarget: Class<*>, proxy: Any) {
 
-  init {
-    Log.info("Kotlin in da'place !")
+    Log.debug("Setting proxy: ${target.declaringClass.simpleName}.${target.name} -> $proxy")
+
+    target.set(proxyTarget.kotlin.objectInstance, proxy)
   }
+
+  @Throws(IllegalAccessException::class,
+      InstantiationException::class)
+  override fun getNewInstance(container: FMLModContainer,
+                              kotlinObjectClass: Class<*>,
+                              classLoader: ClassLoader,
+                              factoryMarkedAnnotation: Method?): Any {
+
+    Log.debug("FML has asked for ${kotlinObjectClass.simpleName} to be constructed")
+
+    return when {
+      factoryMarkedAnnotation != null -> factoryMarkedAnnotation(null)
+      "INSTANCE" in kotlinObjectClass.fields.map { it.name } -> kotlinObjectClass.getField("INSTANCE").get(null)
+      else -> kotlinObjectClass.newInstance()
+    }
+  }
+
+  override fun supportsStatics() = false
+
+  override fun setInternalProxies(mod: ModContainer, side: Side, loader: ClassLoader) = Unit
 
 }

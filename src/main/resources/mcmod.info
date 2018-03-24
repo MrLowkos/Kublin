@@ -5,12 +5,10 @@
   "description": "Kotlin Language Adapter.",
   "version": "${version}",
   "mcversion": "${mcversion}",
-  "url": "https://github.com/mrlowkos/Kublin",
-  "updateUrl": "",
+  "url": "https://minecraft.curseforge.com",
+  "updateUrl": "https://github.com/mrlowkos/Kublin",
   "authorList": ["MrLowkos"],
-  "credits": "The Forge and FML guys, for making forge",
-  "logoFile": "",
-  "screenshots": [],
-  "dependencies": []
+  "credits": "The Forge and FML guys, for making forge.",
+  "logoFile": "assets/kublin/logo.png"
 }
 ]
