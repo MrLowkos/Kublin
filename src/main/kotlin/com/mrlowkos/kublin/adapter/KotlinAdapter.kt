@@ -61,7 +61,7 @@ class KotlinAdapter : ILanguageAdapter {
     return when {
       factoryMarkedAnnotation != null -> factoryMarkedAnnotation(null)
       "INSTANCE" in kotlinObjectClass.fields.map { it.name } -> kotlinObjectClass.getField("INSTANCE").get(null)
-      else -> kotlinObjectClass.newInstance()
+      else -> kotlinObjectClass.kotlin.objectInstance ?: kotlinObjectClass.newInstance()
     }
   }
 
